@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function App() {
+import SplashScreen from './screens/SplashScreen';
+// import HomeScreen from './screens/HomeScreen';
+// import { DarkModeProvider } from './components/DarkModeContext';
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const MainTabNavigator = () => (
+  <Tab.Navigator
+    initialRouteName="Home"
+    screenOptions={{
+      tabBarActiveTintColor: 'blue',
+      tabBarInactiveTintColor: 'gray',
+    }}
+  >
+    <Tab.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" color={color} size={size} />
+        ),
+      }}
+    />
+  </Tab.Navigator>
+);
+
+const AuthStack = () => (
+  <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Splash" component={SplashScreen} />
+    <Stack.Screen name="Main" component={MainTabNavigator} />
+  </Stack.Navigator>
+);
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+        <AuthStack />
+      </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
