@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SplashScreen from './screens/SplashScreen';
 // import HomeScreen from './screens/HomeScreen';
 // import { DarkModeProvider } from './components/DarkModeContext';
+import EventDetailsScreen from './screens/EventDetailScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
