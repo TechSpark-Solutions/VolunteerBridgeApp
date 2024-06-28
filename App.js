@@ -4,13 +4,21 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import SplashScreen from './screens/SplashScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import AdminDashboard from './screens/AdminDashboard';
+import AdminDashboard from './AdminScreens/AdminDashboard';
 import VolunteerDashboard from './screens/VolunteerDashboard';
 import ProfileSettings from './screens/ProfileSettings';
 import EventScreen from './screens/EventScreen';
 import SignUpModal from './screens/SignUpModal';
+import CreateEvent from './screens/CreateEvent'; 
+import EditEvent from './screens/EditEvent'; 
+
+
+import VolunteerOpportunitiesScreen from './screens/HomeScreensPop/VolunteerOpportunitiesScreen';
+import EventCalendarScreen from './screens/HomeScreensPop/EventCalendarScreen';
+import NewsFeedScreen from './screens/HomeScreensPop/NewsFeedScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -73,6 +81,11 @@ const AuthStack = () => (
     <Stack.Screen name="EventScreen" component={EventScreen} />
     <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
     <Stack.Screen name="SignUpModal" component={SignUpModal} />
+    <Stack.Screen name="CreateEvent" component={CreateEvent} /> 
+    <Stack.Screen name="EditEvent" component={EditEvent} /> 
+    <Stack.Screen name="VolunteerOpportunities" component={VolunteerOpportunitiesScreen} />
+    <Stack.Screen name="EventCalendar" component={EventCalendarScreen} />
+    <Stack.Screen name="NewsFeed" component={NewsFeedScreen} />
   </Stack.Navigator>
 );
 
