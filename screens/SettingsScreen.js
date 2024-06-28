@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const HomeScreen = ({ navigation }) => {
+const SettingsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to VolunteerBridge</Text>
+      <Text style={styles.title}>Settings</Text>
       <Button
-        title="Go to Dashboard"
-        onPress={() => navigation.navigate('VolunteerDashboard')}
+        title="Go to Profile Settings"
+        onPress={() => navigation.navigate('ProfileSettings')}
       />
     </View>
   );
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default SettingsScreen;
