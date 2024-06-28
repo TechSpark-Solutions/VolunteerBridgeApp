@@ -21,7 +21,7 @@ const SplashScreen = ({ navigation }) => {
     Animated.parallel([fadeInAnimation, scaleAnimation]).start(() => {
       setTimeout(() => {
         navigation.replace('HomeScreen');
-      }, 3000);
+      }, 1000);
     });
   }, []);
 
@@ -31,7 +31,7 @@ const SplashScreen = ({ navigation }) => {
         source={require('../assets/logo.png')}
         style={[styles.logo, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}
       />
-      <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>Volunteeer Bridge App</Animated.Text>
+      <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>VolunteerBridge App</Animated.Text>
       <Text style={styles.loadingText}>Loading</Text>
     </View>
   );

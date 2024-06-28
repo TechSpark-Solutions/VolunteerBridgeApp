@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const HomeScreen = ({ navigation }) => {
+const VolunteerDashboard = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to VolunteerBridge</Text>
+      <Text style={styles.title}>Volunteer Dashboard</Text>
       <Button
-        title="Go to Dashboard"
-        onPress={() => navigation.navigate('VolunteerDashboard')}
+        title="Sign Up for an Event"
+        onPress={() => navigation.navigate('SignUpModal')}
       />
     </View>
   );
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default VolunteerDashboard;
