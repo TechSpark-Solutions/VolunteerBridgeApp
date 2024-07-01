@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, TextInput, Button, Alert } from 'react-native';
-import NewsFeedScreen from './HomeScreensPop/NewsFeedScreen';
-import EventCalendarScreen from './HomeScreensPop/EventCalendarScreen';
-import VolunteerOpportunitiesScreen from './HomeScreensPop/VolunteerOpportunitiesScreen';
+import { useTheme } from '../context/ThemeContext';
 
 const HomeScreen = ({ navigation }) => {
+  const { isDarkMode } = useTheme();
   const [orgName, setOrgName] = useState('');
   const [missionStatement, setMissionStatement] = useState('');
   const [contactInfo, setContactInfo] = useState('');
@@ -13,13 +12,11 @@ const HomeScreen = ({ navigation }) => {
   const [otherImages, setOtherImages] = useState([]);
 
   const handleProfileCreation = () => {
-    // Validate input fields
     if (!orgName || !missionStatement || !contactInfo || !projectDescription) {
       Alert.alert('Error', 'Please fill in all required fields.');
       return;
     }
 
-    // Construct nonprofit profile object
     const nonprofitProfile = {
       orgName,
       missionStatement,
@@ -29,26 +26,6 @@ const HomeScreen = ({ navigation }) => {
       otherImages,
     };
 
-    // Here you can send the nonprofitProfile object to your backend API for storage
-    // Example API call:
-    // fetch('https://your-api-endpoint.com/nonprofit/profile', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(nonprofitProfile),
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log('Nonprofit profile created:', data);
-    //   Alert.alert('Success', 'Nonprofit profile created successfully.');
-    // })
-    // .catch(error => {
-    //   console.error('Error creating nonprofit profile:', error);
-    //   Alert.alert('Error', 'Failed to create nonprofit profile. Please try again later.');
-    // });
-
-    // For demonstration, alert success and reset form
     Alert.alert('Success', 'Nonprofit profile created successfully.');
     resetForm();
   };
@@ -67,57 +44,22 @@ const HomeScreen = ({ navigation }) => {
       source={require('../assets/background.jpg')}
       style={styles.backgroundImage}
     >
-      <View style={styles.container}>
-        <Text style={styles.title}>Welcome to VolunteerBridge</Text>
-        
-        {/* Nonprofit Profile Creation Form */}
-        <TextInput
-          style={styles.input}
-          placeholder="Organization Name"
-          value={orgName}
-          onChangeText={text => setOrgName(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Mission Statement"
-          multiline
-          numberOfLines={4}
-          value={missionStatement}
-          onChangeText={text => setMissionStatement(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Contact Information"
-          value={contactInfo}
-          onChangeText={text => setContactInfo(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Project Description"
-          multiline
-          numberOfLines={4}
-          value={projectDescription}
-          onChangeText={text => setProjectDescription(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Logo URL"
-          value={logoUrl}
-          onChangeText={text => setLogoUrl(text)}
-        />
-        {/* Input for other images can be added similarly */}
+      <View style={isDarkMode ? styles.containerDark : styles.container}>
+        <Text style={isDarkMode ? styles.titleDark : styles.title}>Welcome to VolunteerBridge</Text>
 
-        <Button title="Create Profile" onPress={handleProfileCreation} />
+        {/* Button to navigate to NonprofitProfileScreen */}
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NonprofitProfileScreen')}>
+          <Text style={styles.buttonText}>Create Nonprofit Profile</Text>
+        </TouchableOpacity>
 
-        {/* Navigation buttons */}
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('VolunteerOpportunities')}>
-          <Text style={styles.buttonText}>Volunteer Opportunities</Text>
+          <Text style={styles.buttonText}>Browse Volunteer Opportunities</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EventCalendar')}>
-          <Text style={styles.buttonText}>Event Calendar</Text>
+          <Text style={styles.buttonText}>View Event Calendar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NewsFeed')}>
-          <Text style={styles.buttonText}>News & Updates</Text>
+          <Text style={styles.buttonText}>Check News and Updates</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -134,13 +76,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background overlay
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 20,
+  },
+  containerDark: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)', 
     padding: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  titleDark: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#bbb', 
     textAlign: 'center',
     marginBottom: 20,
   },
