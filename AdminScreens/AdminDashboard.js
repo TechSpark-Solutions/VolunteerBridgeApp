@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, Modal, TextInput, ImageBackground } from 'react-native';
-import { useTheme } from '../context/ThemeContext'; // Adjust the path as necessary
+import { useTheme } from '../context/ThemeContext'; 
 
 const mockEvents = [
   { id: '1', name: 'Food Drive', date: '2024-07-01', location: 'Community Center' },
@@ -26,6 +26,13 @@ const AdminDashboard = ({ navigation }) => {
     setIsModalVisible(false);
   };
 
+  const handleUpdateEvent = (updatedEvent) => {
+    const updatedEvents = events.map((event) =>
+      event.id === updatedEvent.id ? updatedEvent : event
+    );
+    setEvents(updatedEvents);
+  };
+
   const renderItem = ({ item }) => (
     <View style={isDarkMode ? styles.eventItemDark : styles.eventItem}>
       <Text style={isDarkMode ? styles.eventNameDark : styles.eventName}>{item.name}</Text>
@@ -33,7 +40,10 @@ const AdminDashboard = ({ navigation }) => {
       <Text style={isDarkMode ? styles.textDark : styles.text}>{item.location}</Text>
       <Button
         title="Edit"
-        onPress={() => navigation.navigate('EditEvent', { eventId: item.id })}
+        onPress={() => navigation.navigate('EditEvent', { eventId: item.id,
+        eventDetails: item,
+        updateEvent: handleUpdateEvent,
+         })}
       />
     </View>
   );
@@ -52,7 +62,6 @@ const AdminDashboard = ({ navigation }) => {
           keyExtractor={(item) => item.id}
         />
 
-        {/* Modal for creating a new event */}
         <Modal
           visible={isModalVisible}
           animationType="slide"
