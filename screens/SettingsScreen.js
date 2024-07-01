@@ -19,7 +19,7 @@ const SettingsScreen = ({ navigation }) => {
       </View>
 
       <Button title="Enable News Notifications" onPress={handleNotificationSignup} />
-      <Button title="Go to Profile Settings" onPress={() => navigation.navigate('ProfileSettings')} />
+  
       <Button
         title="Global Settings"
         onPress={() => navigation.navigate('GlobalSettings')}

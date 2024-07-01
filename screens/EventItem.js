@@ -1,5 +1,3 @@
-// Each event is rendered using the EventItem component. EventItem Component: Receives an event object as a prop and displays its details. Styled to match the overall app theme.
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 

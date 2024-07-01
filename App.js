@@ -9,12 +9,13 @@ import SplashScreen from './screens/SplashScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AdminDashboard from './AdminScreens/AdminDashboard';
-import VolunteerDashboard from './screens/VolunteerDashboard/VolunteerDashboard';
+import VolunteerDashboard from './screens/VolunteerDashboard';
 import GlobalSettings from './screens/GlobalSettings';
 import UserProfileSettings from './screens/UserProfileSettings';
 import SignUpModal from './screens/SignUpModal';
 import CreateEvent from './screens/CreateEvent';
 import EditEvent from './screens/EditEvent';
+import EventList from './screens/EventList';
 import VolunteerOpportunitiesScreen from './screens/HomeScreensPop/VolunteerOpportunitiesScreen';
 import EventCalendarScreen from './screens/HomeScreensPop/EventCalendarScreen';
 import NewsFeedScreen from './screens/HomeScreensPop/NewsFeedScreen';
@@ -86,6 +87,7 @@ const AuthStack = () => (
     <Stack.Screen name="SignUpModal" component={SignUpModal} />
     <Stack.Screen name="CreateEvent" component={CreateEvent} />
     <Stack.Screen name="EditEvent" component={EditEvent} />
+    <Stack.Screen name="EventList" component={EventList} />
     <Stack.Screen name="VolunteerOpportunities" component={VolunteerOpportunitiesScreen} />
     <Stack.Screen name="EventCalendar" component={EventCalendarScreen} />
     <Stack.Screen name="NewsFeed" component={NewsFeedScreen} />
