@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, Modal, TextInput } from 'react-native';
+import { useTheme } from '../context/ThemeContext'; // Adjust the path as necessary
 
 const mockEvents = [
   { id: '1', name: 'Food Drive', date: '2024-07-01', location: 'Community Center' },
@@ -7,6 +8,7 @@ const mockEvents = [
 ];
 
 const AdminDashboard = ({ navigation }) => {
+  const { isDarkMode } = useTheme();
   const [events, setEvents] = useState(mockEvents);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newEventName, setNewEventName] = useState('');
@@ -25,10 +27,10 @@ const AdminDashboard = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.eventItem}>
-      <Text style={styles.eventName}>{item.name}</Text>
-      <Text>{item.date}</Text>
-      <Text>{item.location}</Text>
+    <View style={isDarkMode ? styles.eventItemDark : styles.eventItem}>
+      <Text style={isDarkMode ? styles.eventNameDark : styles.eventName}>{item.name}</Text>
+      <Text style={isDarkMode ? styles.textDark : styles.text}>{item.date}</Text>
+      <Text style={isDarkMode ? styles.textDark : styles.text}>{item.location}</Text>
       <Button
         title="Edit"
         onPress={() => navigation.navigate('EditEvent', { eventId: item.id })}
@@ -37,8 +39,8 @@ const AdminDashboard = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Admin Dashboard</Text>
+    <View style={isDarkMode ? styles.containerDark : styles.container}>
+      <Text style={isDarkMode ? styles.titleDark : styles.title}>Admin Dashboard</Text>
       <Button
         title="Create Event"
         onPress={() => setIsModalVisible(true)}
@@ -92,11 +94,24 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f0f0f0',
   },
+  containerDark: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#000',
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    color: '#000',
+  },
+  titleDark: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#fff',
   },
   eventItem: {
     padding: 20,
@@ -109,9 +124,32 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
+  eventItemDark: {
+    padding: 20,
+    backgroundColor: '#333',
+    marginBottom: 10,
+    borderRadius: 10,
+    shadowColor: '#fff',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 2,
+  },
   eventName: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#000',
+  },
+  eventNameDark: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  text: {
+    color: '#000',
+  },
+  textDark: {
+    color: '#fff',
   },
   modalContainer: {
     flex: 1,

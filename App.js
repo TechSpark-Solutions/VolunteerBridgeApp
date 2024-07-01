@@ -18,6 +18,10 @@ import EditEvent from './screens/EditEvent';
 import VolunteerOpportunitiesScreen from './screens/HomeScreensPop/VolunteerOpportunitiesScreen';
 import EventCalendarScreen from './screens/HomeScreensPop/EventCalendarScreen';
 import NewsFeedScreen from './screens/HomeScreensPop/NewsFeedScreen';
+import NonprofitProfileScreen from './screens/HomeScreensPop/NonprofitProfileScreen';
+
+import { ThemeProvider } from './context/ThemeContext';
+import { NonprofitProfileProvider } from './context/NonprofitProfileContext';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -85,16 +89,19 @@ const AuthStack = () => (
     <Stack.Screen name="VolunteerOpportunities" component={VolunteerOpportunitiesScreen} />
     <Stack.Screen name="EventCalendar" component={EventCalendarScreen} />
     <Stack.Screen name="NewsFeed" component={NewsFeedScreen} />
+    <Stack.Screen name="NonprofitProfileScreen" component={NonprofitProfileScreen} />
   </Stack.Navigator>
 );
 
 const App = () => {
   return (
-    <NativeBaseProvider>
-      <NavigationContainer>
-        <AuthStack />
-      </NavigationContainer>
-    </NativeBaseProvider>
+    <ThemeProvider>
+      <NonprofitProfileProvider>
+        <NavigationContainer>
+          <AuthStack />
+        </NavigationContainer>
+      </NonprofitProfileProvider>
+    </ThemeProvider>
   );
 };
 

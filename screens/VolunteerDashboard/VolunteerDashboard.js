@@ -1,14 +1,17 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { useTheme } from '../../context/ThemeContext'; // Import useTheme hook from context
 
 const VolunteerDashboard = ({ navigation }) => {
+  const { isDarkMode } = useTheme(); // Use the isDarkMode state from ThemeContext
+
   return (
     <ImageBackground
-      //source={require('../assets/background.jpg')}
+    source={require('../../assets/background.jpg')}
       style={styles.backgroundImage}
     >
-      <View style={styles.container}>
-        <Text style={styles.title}>Volunteer Dashboard</Text>
+      <View style={isDarkMode ? styles.containerDark : styles.container}>
+        <Text style={isDarkMode ? styles.titleDark : styles.title}>Volunteer Dashboard</Text>
         
         {/* Navigation buttons */}
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignUpModal')}>
@@ -41,10 +44,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
   },
+  containerDark: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 20,
+  },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  titleDark: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#bbb', // Adjusted color for dark mode
     textAlign: 'center',
     marginBottom: 20,
   },
