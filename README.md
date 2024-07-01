@@ -25,8 +25,10 @@ VolunteerBridge is a mobile application designed to help nonprofits find volunte
 - **Home Screen**: Main navigation screen.
 - **Volunteer Dashboard**: Dashboard for volunteers to sign up for opportunities.
 - **Admin Dashboard**: Dashboard for nonprofits to create and manage events.
+- **Event List Screen** List view of all available opportunities.
 - **Event Screen**: Detailed view of event information.
-- **Profile Settings**: Screen for managing user profiles.
+- **User Profile Settings**: Screen for managing user profiles.
+- **Global Settings**: Screen for managing application settings.
 - **Sign-Up Modal**: Modal for signing up for events.
 
 ## UML

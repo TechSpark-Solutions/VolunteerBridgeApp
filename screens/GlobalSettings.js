@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const ProfileSettings = () => {
+const GlobalSettings = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Profile Settings</Text>
-      {/* Add form fields for profile settings */}
+      <Text style={styles.title}>Global Settings</Text>
+      <Text>This section is for handling settings that relate to the app</Text>
     </View>
   );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileSettings;
+export default GlobalSettings;
