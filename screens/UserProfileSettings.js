@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '../context/ThemeContext'; // Import useTheme hook from context
 
 const UserProfileSettings = () => {
   const navigation = useNavigation();
+  const { isDarkMode } = useTheme(); // Retrieve isDarkMode state and toggleTheme function
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -61,55 +63,55 @@ const UserProfileSettings = () => {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>User Profile Settings</Text>
+    <ScrollView contentContainerStyle={isDarkMode ? styles.containerDark : styles.container}>
+      <Text style={isDarkMode ? styles.titleDark : styles.title}>User Profile Settings</Text>
       
-      <Text style={styles.label}>First Name:</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>First Name:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isDarkMode && styles.inputDark]}
         value={firstName}
         onChangeText={setFirstName}
         placeholder="Enter your first name"
       />
 
-      <Text style={styles.label}>Last Name:</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>Last Name:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isDarkMode && styles.inputDark]}
         value={lastName}
         onChangeText={setLastName}
         placeholder="Enter your last name"
       />
 
-      <Text style={styles.label}>Phone:</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>Phone:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isDarkMode && styles.inputDark]}
         value={phone}
         onChangeText={setPhone}
         placeholder="Enter your phone number"
         keyboardType="phone-pad"
       />
 
-      <Text style={styles.label}>Email:</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>Email:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isDarkMode && styles.inputDark]}
         value={email}
         onChangeText={setEmail}
         placeholder="Enter your email"
         keyboardType="email-address"
       />
 
-      <Text style={styles.label}>Age:</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>Age:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isDarkMode && styles.inputDark]}
         value={age}
         onChangeText={setAge}
         placeholder="Enter your age"
         keyboardType="numeric"
       />
 
-      <Text style={styles.label}>Location (State):</Text>
-      <TouchableOpacity onPress={toggleModal} style={styles.dropdown}>
-        <Text style={styles.dropdownText}>{location || "Select your state"}</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>Location (State):</Text>
+      <TouchableOpacity onPress={toggleModal} style={[styles.dropdown, isDarkMode && styles.dropdownDark]}>
+        <Text style={[styles.dropdownText, isDarkMode && styles.dropdownTextDark]}>{location || "Select your state"}</Text>
       </TouchableOpacity>
 
       <Modal isVisible={isModalVisible}>
@@ -123,17 +125,17 @@ const UserProfileSettings = () => {
         </View>
       </Modal>
 
-      <Text style={styles.label}>Skills:</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>Skills:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isDarkMode && styles.inputDark]}
         value={skills}
         onChangeText={setSkills}
         placeholder="Enter your skills"
       />
 
-      <Text style={styles.label}>Bio:</Text>
+      <Text style={isDarkMode ? styles.labelDark : styles.label}>Bio:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isDarkMode && styles.inputDark]}
         value={bio}
         onChangeText={setBio}
         placeholder="Tell us about yourself"
@@ -158,14 +160,32 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f5f5f5',
   },
+  containerDark: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#333',
+  },
   title: {
     fontSize: 24,
     marginBottom: 20,
     textAlign: 'center',
+    color: '#000',
+  },
+  titleDark: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#fff',
   },
   label: {
     fontSize: 16,
     marginBottom: 8,
+    color: '#000',
+  },
+  labelDark: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#fff',
   },
   input: {
     height: 40,
@@ -173,6 +193,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 8,
+    color: '#000',
+  },
+  inputDark: {
+    color: '#fff',
+    borderColor: '#888',
   },
   dropdown: {
     height: 40,
@@ -181,9 +206,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'center',
     paddingLeft: 8,
+    backgroundColor: '#fff',
+  },
+  dropdownDark: {
+    backgroundColor: '#444',
+    borderColor: '#888',
   },
   dropdownText: {
     fontSize: 16,
+    color: '#000',
+  },
+  dropdownTextDark: {
+    color: '#fff',
   },
   modalContent: {
     backgroundColor: 'white',
@@ -194,6 +228,7 @@ const styles = StyleSheet.create({
   stateItem: {
     padding: 10,
     fontSize: 18,
+    color: '#000',
   },
   buttonContainer: {
     flexDirection: 'row',
