@@ -19,10 +19,11 @@
     "axios": "^1.7.2",
     "expo": "^51.0.14",
     "expo-location": "^17.0.1",
-    "native-base": "^3.4.28",
+    "native-base": "^2.15.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.2",
+    "react-native-calendars": "^1.1305.0",
     "react-native-color-picker": "^0.6.0",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-modal": "^13.0.1",
@@ -40,3 +41,4 @@
   },
   "private": true
 }
+
