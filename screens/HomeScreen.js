@@ -111,13 +111,13 @@ const HomeScreen = ({ navigation }) => {
 
         {/* Navigation buttons */}
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('VolunteerOpportunities')}>
-          <Text style={styles.buttonText}>Browse Volunteer Opportunities</Text>
+          <Text style={styles.buttonText}>Volunteer Opportunities</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EventCalendar')}>
-          <Text style={styles.buttonText}>View Event Calendar</Text>
+          <Text style={styles.buttonText}>Event Calendar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NewsFeed')}>
-          <Text style={styles.buttonText}>Check News and Updates</Text>
+          <Text style={styles.buttonText}>News & Updates</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,14 +9,12 @@ import SplashScreen from './screens/SplashScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AdminDashboard from './AdminScreens/AdminDashboard';
-import VolunteerDashboard from './screens/VolunteerDashboard';
-import ProfileSettings from './screens/ProfileSettings';
-import EventScreen from './screens/EventScreen';
+import VolunteerDashboard from './screens/VolunteerDashboard/VolunteerDashboard';
+import GlobalSettings from './screens/GlobalSettings';
+import UserProfileSettings from './screens/UserProfileSettings';
 import SignUpModal from './screens/SignUpModal';
-import CreateEvent from './screens/CreateEvent'; 
-import EditEvent from './screens/EditEvent'; 
-
-
+import CreateEvent from './screens/CreateEvent';
+import EditEvent from './screens/EditEvent';
 import VolunteerOpportunitiesScreen from './screens/HomeScreensPop/VolunteerOpportunitiesScreen';
 import EventCalendarScreen from './screens/HomeScreensPop/EventCalendarScreen';
 import NewsFeedScreen from './screens/HomeScreensPop/NewsFeedScreen';
@@ -78,11 +77,11 @@ const AuthStack = () => (
   <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Splash" component={SplashScreen} />
     <Stack.Screen name="HomeScreen" component={MainTabNavigator} />
-    <Stack.Screen name="EventScreen" component={EventScreen} />
-    <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
+    <Stack.Screen name="GlobalSettings" component={GlobalSettings} />
+    <Stack.Screen name="UserProfileSettings" component={UserProfileSettings} />
     <Stack.Screen name="SignUpModal" component={SignUpModal} />
-    <Stack.Screen name="CreateEvent" component={CreateEvent} /> 
-    <Stack.Screen name="EditEvent" component={EditEvent} /> 
+    <Stack.Screen name="CreateEvent" component={CreateEvent} />
+    <Stack.Screen name="EditEvent" component={EditEvent} />
     <Stack.Screen name="VolunteerOpportunities" component={VolunteerOpportunitiesScreen} />
     <Stack.Screen name="EventCalendar" component={EventCalendarScreen} />
     <Stack.Screen name="NewsFeed" component={NewsFeedScreen} />
@@ -91,10 +90,13 @@ const AuthStack = () => (
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <AuthStack />
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <NavigationContainer>
+        <AuthStack />
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 };
 
 export default App;
+

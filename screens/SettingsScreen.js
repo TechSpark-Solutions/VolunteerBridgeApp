@@ -6,8 +6,12 @@ const SettingsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Settings</Text>
       <Button
-        title="Go to Profile Settings"
-        onPress={() => navigation.navigate('ProfileSettings')}
+        title="Global Settings"
+        onPress={() => navigation.navigate('GlobalSettings')}
+      />
+       <Button
+        title="User Profile Settings"
+        onPress={() => navigation.navigate('UserProfileSettings')}
       />
     </View>
   );

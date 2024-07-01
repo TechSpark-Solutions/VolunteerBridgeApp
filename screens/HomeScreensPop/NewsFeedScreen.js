@@ -4,8 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 const NewsFeedScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>News Feed</Text>
-      <Text style={styles.text}>Latest news and updates will appear here.</Text>
+      <Text style={styles.title}>News & Updates</Text>
+      <Text style={styles.text}>Organization news and updates will appear here.</Text>
     </View>
   );
 };
