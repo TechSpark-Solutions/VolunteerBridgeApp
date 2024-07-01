@@ -30,7 +30,7 @@ const VolunteerDashboard = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require('../assets/background.jpg')}
+      source={require('../assets/background2.jpg')}
       style={styles.backgroundImage}
     >
       <View style={isDarkMode ? styles.containerDark : styles.container}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, Modal, TextInput } from 'react-native';
+import { View, Text, Button, StyleSheet, FlatList, Modal, TextInput, ImageBackground } from 'react-native';
 import { useTheme } from '../context/ThemeContext'; // Adjust the path as necessary
 
 const mockEvents = [
@@ -39,65 +39,72 @@ const AdminDashboard = ({ navigation }) => {
   );
 
   return (
-    <View style={isDarkMode ? styles.containerDark : styles.container}>
-      <Text style={isDarkMode ? styles.titleDark : styles.title}>Admin Dashboard</Text>
-      <Button
-        title="Create Event"
-        onPress={() => setIsModalVisible(true)}
-      />
-      <FlatList
-        data={events}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+    <ImageBackground source={require('../assets/background3.jpg')} style={styles.backgroundImage}>
+      <View style={isDarkMode ? styles.containerDark : styles.container}>
+        <Text style={isDarkMode ? styles.titleDark : styles.title}>Admin Dashboard</Text>
+        <Button
+          title="Create Event"
+          onPress={() => setIsModalVisible(true)}
+        />
+        <FlatList
+          data={events}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
 
-      {/* Modal for creating a new event */}
-      <Modal
-        visible={isModalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Create New Event</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Event Name"
-              value={newEventName}
-              onChangeText={text => setNewEventName(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Event Date"
-              value={newEventDate}
-              onChangeText={text => setNewEventDate(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Event Location"
-              value={newEventLocation}
-              onChangeText={text => setNewEventLocation(text)}
-            />
-            <Button title="Create" onPress={handleCreateEvent} />
-            <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+        {/* Modal for creating a new event */}
+        <Modal
+          visible={isModalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setIsModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Create New Event</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Event Name"
+                value={newEventName}
+                onChangeText={text => setNewEventName(text)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Event Date"
+                value={newEventDate}
+                onChangeText={text => setNewEventDate(text)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Event Location"
+                value={newEventLocation}
+                onChangeText={text => setNewEventLocation(text)}
+              />
+              <Button title="Create" onPress={handleCreateEvent} />
+              <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+            </View>
           </View>
-        </View>
-      </Modal>
-    </View>
+        </Modal>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'rgba(240, 240, 240, 0.8)', // Semi-transparent background overlay for light mode
   },
   containerDark: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#000',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent background overlay for dark mode
   },
   title: {
     fontSize: 24,

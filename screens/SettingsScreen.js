@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Switch, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, Alert } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 
 const SettingsScreen = ({ navigation }) => {
@@ -10,39 +10,49 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={isDarkMode ? styles.containerDark : styles.container}>
-      <Text style={isDarkMode ? styles.titleDark : styles.title}>Settings</Text>
+    <ImageBackground source={require('../assets/background3.jpg')} style={styles.backgroundImage}>
+      <View style={isDarkMode ? styles.containerDark : styles.container}>
+        <View style={styles.content}>
+          <Text style={isDarkMode ? styles.titleDark : styles.title}>Settings</Text>
 
-      {/* Removed the Dark Mode switch */}
-      
-      <Button title="Enable News Notifications" onPress={handleNotificationSignup} />
-  
-      <Button
-        title="Global Settings"
-        onPress={() => navigation.navigate('GlobalSettings')}
-      />
-      <Button
-        title="User Profile Settings"
-        onPress={() => navigation.navigate('UserProfileSettings')}
-      />
-    </View>
+          <Button title="Enable News Notifications" onPress={handleNotificationSignup} />
+
+          <Button
+            title="Global Settings"
+            onPress={() => navigation.navigate('GlobalSettings')}
+          />
+          <Button
+            title="User Profile Settings"
+            onPress={() => navigation.navigate('UserProfileSettings')}
+          />
+        </View>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
     padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent background overlay
   },
   containerDark: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#333',
     padding: 20,
+    backgroundColor: 'rgba(51, 51, 51, 0.5)', // Dark mode semi-transparent background overlay
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
