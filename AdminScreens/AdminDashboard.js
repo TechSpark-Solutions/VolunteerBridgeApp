@@ -24,14 +24,13 @@ const AdminDashboard = ({ navigation }) => {
     "Environmental Awareness": false
   });
   const [newEventLocation, setNewEventLocation] = useState('');
-  // const [newEventLocation, setNewEventLocation] = useState('');
 
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
   async function fetchEvents() {
     // Fetch events from the database or API
-    
 
-    const fetchedEvents = await axios.get(`http://10.0.0.236:3000/api/v1/events`);
+
+    const fetchedEvents = await axios.get(`${API_URL}/api/v1/events`);
     setEvents(fetchedEvents.data);
   }
 
@@ -49,32 +48,72 @@ const AdminDashboard = ({ navigation }) => {
       detail: newEventDetails,
       contact: newEventContact,
     };
-    
-    const createdEvent = await axios.post(`http://10.0.0.236:3000/api/v1/events`, newEvent);
+
+    const createdEvent = await axios.post(`${API_URL}/api/v1/events`, newEvent);
     setEvents([...events, createdEvent.data]);
     setIsModalVisible(false);
   };
 
-  const handleUpdateEvent = (updatedEvent) => {
+  const handleUpdateEvent = async (updatedEvent) => {
     const updatedEvents = events.map((event) =>
       event.id === updatedEvent.id ? updatedEvent : event
     );
+    await axios.put(`${API_URL}/api/v1/events/${updatedEvent.id}`, updatedEvent);
     setEvents(updatedEvents);
   };
+
+  async function handleDeleteEvent(deletedEvent){
+    await axios.delete(`${API_URL}/api/v1/events/${deletedEvent.id}`);
+    const updatedEvents = events.filter((event) => event.id !== deletedEvent.id);
+    setEvents(updatedEvents);
+
+  }
 
   const renderItem = ({ item }) => (
     <View style={isDarkMode ? styles.eventItemDark : styles.eventItem}>
       <Text style={isDarkMode ? styles.eventNameDark : styles.eventName}>{item.name}</Text>
-      <Text style={isDarkMode ? styles.textDark : styles.text}>{item.date}</Text>
-      <Text style={isDarkMode ? styles.textDark : styles.text}>{item.location}</Text>
+      <Text style={isDarkMode ? styles.textDark : styles.text}>Date: {item.date}</Text>
+      <Text style={isDarkMode ? styles.textDark : styles.text}>Location: {item.location}</Text>
+      <Text style={isDarkMode ? styles.textDark : styles.text}>Contact: {item.contact}</Text>
+      <Text style={isDarkMode ? styles.textDark : styles.text}>Skills: {item.skills ? item.skills.join(', '):  null}</Text>
+      <Text style={isDarkMode ? styles.textDark : styles.text}>Details: {item.details}</Text>
       <Button
         title="Edit"
-        onPress={() => navigation.navigate('EditEvent', {
-          eventId: item.id,
-          eventDetails: item,
-          updateEvent: handleUpdateEvent,
-        })}
+        onPress={() => {
+          let skillsObject = {
+            Cleaning: false,
+            Organization: false,
+            "Heavy Lifting": false,
+            Spanish: false,
+            Cooking: false,
+            Gardening: false,
+            "Environmental Awareness": false
+          };
+          function createSkillsObject(itemSkills){
+            for(let i = 0; i < itemSkills.length; i++){
+              skillsObject[itemSkills[i]] = true;
+            }
+
+          }
+          createSkillsObject(item.skills)
+
+          navigation.navigate('EditEvent', {
+
+            eventName: item.name,
+            eventDetails: item,
+            eventId: item.id,
+            eventDate: item.date,
+            eventLocation: item.location,
+            eventSkills: skillsObject,
+            eventDetails: item.details,
+            eventContact: item.contact,
+            updateEvent: handleUpdateEvent
+          })
+          
+        }
+        }
       />
+      <Button title="Delete" onPress={() => handleDeleteEvent(item)} />
     </View>
   );
 
@@ -145,12 +184,14 @@ const AdminDashboard = ({ navigation }) => {
                 />
                 <Text style={styles.label}>Details</Text>
                 <TextInput
-                  style={{borderWidth: 1, 
-                  borderRadius: 5,
-                  borderColor: '#ccc', 
-                  padding: 10,
-                  marginBottom: 10,
-                  height: Math.max(40, height+10) }}
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    borderColor: '#ccc',
+                    padding: 10,
+                    marginBottom: 10,
+                    height: Math.max(40, height + 10)
+                  }}
                   multiline
                   placeholder="Join us for a community cleanup event at Central Park."
                   placeholderTextColor='grey'
@@ -159,7 +200,7 @@ const AdminDashboard = ({ navigation }) => {
                   onContentSizeChange={(e) => {
                     setHeight(e.nativeEvent.contentSize.height)
                   }
-                }
+                  }
                 />
                 <Text style={styles.label}>Required Skills</Text>
                 {Object.keys(skills).map(skill => (
