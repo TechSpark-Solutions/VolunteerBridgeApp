@@ -11,7 +11,7 @@ const SettingsScreen = ({ navigation }) => {
   const handleNotificationSignup = () => {
     Alert.alert('Success', 'You have signed up for news notifications.');
   };
-
+ 
   return (
     <LinearGradient
     colors={isDarkMode ? ['#000000', '#434343'] : ['#90A1A4','#95A6A9', '#EFF6F7']}
@@ -100,5 +100,5 @@ const styles = StyleSheet.create({
   },
   
 });
-
+ 
 export default SettingsScreen;
