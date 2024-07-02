@@ -9,6 +9,9 @@ import RadioGroup from 'react-native-radio-buttons-group';
 import axios from 'axios';
 
 const UserProfileSettings = () => {
+
+  const API_URL = process.env.EXPO_PUBLIC_API_URL
+
   const navigation = useNavigation();
   const { isDarkMode } = useTheme(); // Retrieve isDarkMode state and toggleTheme function
 
@@ -16,13 +19,12 @@ const UserProfileSettings = () => {
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState(0);
   const [location, setLocation] = useState('');
-  const [skills, setSkills] = useState('');
   const [bio, setBio] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const [userData, setUserData] = useState({"email": null, "firstName": null, "lastName": null, "role": "user", "userID": null});
+  const [userData, setUserData] = useState({ "email": null, "firstName": null, "lastName": null, "role": "user", "userID": null });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
@@ -46,7 +48,7 @@ const UserProfileSettings = () => {
 
   const authenticate = async () => {
 
-    const API_URL = process.env.EXPO_PUBLIC_API_URL
+
 
     const hasHardware = await checkHardware();
     if (!hasHardware) return;
@@ -61,18 +63,23 @@ const UserProfileSettings = () => {
     try {
       if (credential) {
         const { user, email, fullName } = credential;
-        let signInInfo = { userID: user, email: email, firstName: fullName.givenName, lastName: fullName.familyName, role: selectedRole }
+        let signInInfo = { userID: user, email: email, firstName: fullName.givenName, lastName: fullName.familyName, role: 'user' }
         if (signInInfo.email !== null) {
-          await axios.post(`http://10.0.0.236:3000/api/v1/signup/`, signInInfo);
+          await axios.post(`${API_URL}/api/v1/signup/`, signInInfo);
         }
-        const res = await axios.post(`http://10.0.0.236:3000/api/v1/signin/`, signInInfo);
+        const res = await axios.post(`${API_URL}/api/v1/signin/`, signInInfo);
         let userInfo = res.data;
 
         setIsAuthenticated(true);
         setUserData(userInfo);
         setFirstName(userInfo.firstName);
         setLastName(userInfo.lastName);
+        setPhone(userInfo.phone);
         setEmail(userInfo.email);
+        setAge(userInfo.age);
+        setLocation(userInfo.location);
+        setBio(userInfo.bio);
+        setSelectedRole(userInfo.role);
       }
     } catch (error) {
       if (error.code === 'ERR_CANCELED') {
@@ -91,18 +98,18 @@ const UserProfileSettings = () => {
       email,
       age,
       location,
-      skills,
+      role: selectedRole,
       bio,
     };
-
+    Alert.alert('Saved');
     try {
-      const response = await axios.put('https://example.com/api/profile', )
-
-
+      const response = await axios.put(`${API_URL}/api/v1/signin/${userData.userID}`, profileData);
+      
 
     } catch (error) {
       Alert.alert('Error', error.message);
     }
+
   };
 
   const roleButtons = useMemo(() => ([
@@ -134,108 +141,98 @@ const UserProfileSettings = () => {
     <ScrollView contentContainerStyle={isDarkMode ? styles.containerDark : styles.container}>
       <Text style={isDarkMode ? styles.titleDark : styles.title}>User Profile Settings</Text>
       {isAuthenticated ? <>
-          <>
-            {userData ?
-              <>
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>First Name:</Text>
-                <TextInput
-                  style={[styles.input, isDarkMode && styles.inputDark]}
-                  value={firstName}
-                  onChangeText={setFirstName}
-                  placeholder="Enter your first name"
-                />
+        <>
+          {userData ?
+            <>
+              <RadioGroup
+                radioButtons={roleButtons}
+                onPress={setSelectedRole}
+                selectedId={selectedRole}
+              />
+              <Text style={isDarkMode ? styles.labelDark : styles.label}>First Name:</Text>
+              <TextInput
+                style={[styles.input, isDarkMode && styles.inputDark]}
+                value={firstName}
+                onChangeText={setFirstName}
+                placeholder="Enter your first name"
+              />
 
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>Last Name:</Text>
-                <TextInput
-                  style={[styles.input, isDarkMode && styles.inputDark]}
-                  value={lastName}
-                  onChangeText={setLastName}
-                  placeholder="Enter your last name"
-                />
+              <Text style={isDarkMode ? styles.labelDark : styles.label}>Last Name:</Text>
+              <TextInput
+                style={[styles.input, isDarkMode && styles.inputDark]}
+                value={lastName}
+                onChangeText={setLastName}
+                placeholder="Enter your last name"
+              />
 
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>Phone:</Text>
-                <TextInput
-                  style={[styles.input, isDarkMode && styles.inputDark]}
-                  value={phone}
-                  onChangeText={setPhone}
-                  placeholder="Enter your phone number"
-                  keyboardType="phone-pad"
-                />
+              <Text style={isDarkMode ? styles.labelDark : styles.label}>Phone:</Text>
+              <TextInput
+                style={[styles.input, isDarkMode && styles.inputDark]}
+                value={phone}
+                onChangeText={setPhone}
+                placeholder="Enter your phone number"
+                keyboardType="phone-pad"
+              />
 
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>Email:</Text>
-                <TextInput
-                  style={[styles.input, isDarkMode && styles.inputDark]}
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder="Enter your email"
-                  keyboardType="email-address"
-                />
+              <Text style={isDarkMode ? styles.labelDark : styles.label}>Email:</Text>
+              <TextInput
+                style={[styles.input, isDarkMode && styles.inputDark]}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Enter your email"
+                keyboardType="email-address"
+              />
 
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>Age:</Text>
-                <TextInput
-                  style={[styles.input, isDarkMode && styles.inputDark]}
-                  value={age}
-                  onChangeText={setAge}
-                  placeholder="Enter your age"
-                  keyboardType="numeric"
-                />
+              <Text style={isDarkMode ? styles.labelDark : styles.label}>Age:</Text>
+              <TextInput
+                style={[styles.input, isDarkMode && styles.inputDark]}
+                value={age ? age.toString() : ''}
+                onChangeText={setAge}
+                placeholder="Enter your age"
+                keyboardType="numeric"
+              />
 
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>Location (State):</Text>
-                <TouchableOpacity onPress={toggleModal} style={[styles.dropdown, isDarkMode && styles.dropdownDark]}>
-                  <Text style={[styles.dropdownText, isDarkMode && styles.dropdownTextDark]}>{location || "Select your state"}</Text>
-                </TouchableOpacity>
+              <Text style={isDarkMode ? styles.labelDark : styles.label}>Location (State):</Text>
+              <TouchableOpacity onPress={toggleModal} style={[styles.dropdown, isDarkMode && styles.dropdownDark]}>
+                <Text style={[styles.dropdownText, isDarkMode && styles.dropdownTextDark]}>{location || "Select your state"}</Text>
+              </TouchableOpacity>
 
-                <Modal isVisible={isModalVisible}>
-                  <View style={styles.modalContent}>
-                    <FlatList
-                      data={states}
-                      renderItem={renderStateItem}
-                      keyExtractor={(item) => item}
-                    />
-                    <Button title="Close" onPress={toggleModal} />
-                  </View>
-                </Modal>
-
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>Skills:</Text>
-                <TextInput
-                  style={[styles.input, isDarkMode && styles.inputDark]}
-                  value={skills}
-                  onChangeText={setSkills}
-                  placeholder="Enter your skills"
-                />
-
-                <Text style={isDarkMode ? styles.labelDark : styles.label}>Bio:</Text>
-                <TextInput
-                  style={[styles.input, isDarkMode && styles.inputDark]}
-                  value={bio}
-                  onChangeText={setBio}
-                  placeholder="Tell us about yourself"
-                  multiline
-                />
-
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={[styles.button, styles.cancelButton]}>
-                    <Text style={styles.buttonText}>Cancel</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={handleSave} style={[styles.button, styles.saveButton]}>
-                    <Text style={styles.buttonText}>Save</Text>
-                  </TouchableOpacity>
+              <Modal isVisible={isModalVisible}>
+                <View style={styles.modalContent}>
+                  <FlatList
+                    data={states}
+                    renderItem={renderStateItem}
+                    keyExtractor={(item) => item}
+                  />
+                  <Button title="Close" onPress={toggleModal} />
                 </View>
-              </> : <Text>Reset Sign in with Apple and try again.</Text>
-            }
-          </>
+              </Modal>
+              <Text style={isDarkMode ? styles.labelDark : styles.label}>Bio:</Text>
+              <TextInput
+                style={[styles.input, isDarkMode && styles.inputDark]}
+                value={bio}
+                onChangeText={setBio}
+                placeholder="Tell us about yourself"
+                multiline
+              />
+
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={[styles.button, styles.cancelButton]}>
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleSave} style={[styles.button, styles.saveButton]}>
+                  <Text style={styles.buttonText}>Save</Text>
+                </TouchableOpacity>
+              </View>
+            </> : <Text>Reset Sign in with Apple and try again.</Text>
+          }
+        </>
       </> : <>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-        <Text>Biometric Authentication Example</Text>
-        <RadioGroup
-          radioButtons={roleButtons}
-          onPress={setSelectedRole}
-          selectedId={selectedRole}
-        />
-        <Text style={{ margin: 20 }}>The role will not be updated if the user has already signed in once.</Text>
-        <Button title="Authenticate" onPress={authenticate} />
-      </View>
-    </>}
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+
+          <Button title="Sign In" onPress={authenticate} />
+        </View>
+      </>}
     </ScrollView>
   );
 };
