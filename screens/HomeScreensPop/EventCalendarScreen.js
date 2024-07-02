@@ -101,6 +101,8 @@ const styles = StyleSheet.create({
   },
   calendarContainer: {
     marginTop: 20,
+    width: '100%',
+    height: '40%',
     paddingHorizontal: 10,
     backgroundColor: '#ffffff',
     borderRadius: 10,
