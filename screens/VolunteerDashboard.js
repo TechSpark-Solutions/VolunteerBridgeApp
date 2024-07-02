@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ImageBackground, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const VolunteerDashboard = ({ navigation }) => {
   const { isDarkMode } = useTheme();
@@ -49,9 +50,9 @@ const VolunteerDashboard = ({ navigation }) => {
   );
 
   return (
-    <ImageBackground
-      source={require('../assets/background2.jpg')}
-      style={styles.backgroundImage}
+    <LinearGradient
+      colors={isDarkMode ? ['#000000', '#434343'] : ['#90A1A4','#95A6A9', '#EFF6F7']}
+      style={styles.gradient}
     >
       <View style={isDarkMode ? styles.containerDark : styles.container}>
         <Text style={isDarkMode ? styles.titleDark : styles.title}>Sign up — Volunteer!</Text>
@@ -77,21 +78,19 @@ const VolunteerDashboard = ({ navigation }) => {
           </View>
         )}
       </View>
-    </ImageBackground>
+      </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  gradient: {
     flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    // backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
   },
   containerDark: {
@@ -102,11 +101,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 35,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
     marginBottom: 20,
+    fontFamily:'Times New Roman',
   },
   titleDark: {
     fontSize: 28,
@@ -128,9 +128,14 @@ const styles = StyleSheet.create({
   eventName: {
     fontSize: 18,
     fontWeight: 'bold',
+    backgroundColor:'lightgrey',
+    padding:10,
+    margin:0,
   },
   eventDate: {
-    color: 'gray',
+    color: 'black',
+    fontWeight: 'bold',
+    marginTop: 10,
   },
   eventLocation: {
     marginTop: 5,

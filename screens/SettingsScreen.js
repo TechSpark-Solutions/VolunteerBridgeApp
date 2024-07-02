@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: 'rgba(51, 51, 51, 0.5)', 
+    // backgroundColor: 'rgba(51, 51, 51, 0.5)', 
   },
   content: {
     flex: 1,
