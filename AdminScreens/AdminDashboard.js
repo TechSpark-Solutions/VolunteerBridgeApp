@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, Modal, TextInput, ImageBackground } from 'react-native';
+import { View, Text, Button, StyleSheet, FlatList, Modal, TextInput, ImageBackground,TouchableOpacity, } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import axios from 'axios';
 import { CheckBox } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const AdminDashboard = ({ navigation }) => {
@@ -78,7 +79,11 @@ const AdminDashboard = ({ navigation }) => {
       <Text style={isDarkMode ? styles.textDark : styles.text}>Skills: {item.skills ? item.skills.join(', '):  null}</Text>
       <Text style={isDarkMode ? styles.textDark : styles.text}>Details: {item.details}</Text>
       <Button
+      style={styles.button}
         title="Edit"
+        color="#1a759f"
+        buttonStyle={styles.editButton}
+        titleStyle={styles.editButtonText}
         onPress={() => {
           let skillsObject = {
             Cleaning: false,
@@ -113,7 +118,14 @@ const AdminDashboard = ({ navigation }) => {
         }
         }
       />
-      <Button title="Delete" onPress={() => handleDeleteEvent(item)} />
+
+<Button
+        title="Delete"
+        color="red"
+        buttonStyle={styles.deleteButton}
+        titleStyle={styles.deleteButtonText}
+        onPress={() => handleDeleteEvent(item)}
+      />
     </View>
   );
 
@@ -127,13 +139,15 @@ const AdminDashboard = ({ navigation }) => {
   const [height, setHeight] = useState(200);
 
   return (
-    <ImageBackground source={require('../assets/background3.jpg')} style={styles.backgroundImage}>
+    <LinearGradient
+      colors={isDarkMode ? ['#000000', '#434343'] : ['#90A1A4','#95A6A9', '#EFF6F7']}
+      style={styles.gradient}
+    >
       <View style={isDarkMode ? styles.containerDark : styles.container}>
-        <Text style={isDarkMode ? styles.titleDark : styles.title}>Admin Dashboard</Text>
-        <Button
-          title="Create Event"
-          onPress={() => setIsModalVisible(true)}
-        />
+        <Text style={isDarkMode ? styles.titleDark : styles.title}></Text>
+        <TouchableOpacity style={styles.button} onPress={() => setIsModalVisible(true)}>
+        <Text style={styles.buttonText}>Create Event</Text>
+        </TouchableOpacity>
         <FlatList
           data={events}
           renderItem={renderItem}
@@ -218,20 +232,18 @@ const AdminDashboard = ({ navigation }) => {
           </View>
         </Modal>
       </View>
-    </ImageBackground>
+      </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  gradient: {
     flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'rgba(240, 240, 240, 0.8)', // Semi-transparent background overlay for light mode
+    // backgroundColor: 'rgba(240, 240, 240, 0.8)', // Semi-transparent background overlay for light mode
   },
   containerDark: {
     flex: 1,
@@ -244,6 +256,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
     color: '#000',
+    fontFamily:'Times New Roman',
   },
   titleDark: {
     fontSize: 24,
@@ -253,9 +266,9 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   eventItem: {
-    padding: 20,
+    padding: 10,
     backgroundColor: '#fff',
-    marginBottom: 10,
+    marginBottom: 20,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -277,7 +290,9 @@ const styles = StyleSheet.create({
   eventName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
+    backgroundColor:'lightgrey',
+    padding:10,
+    margin:0,
   },
   eventNameDark: {
     fontSize: 18,
@@ -323,6 +338,38 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
   },
+  button: {
+    backgroundColor: '#1a759f',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 30 ,
+    marginTop:-20,
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily:'Times New Roman',
+  },
+  editButton: {
+    backgroundColor: 'transparent',
+  },
+  deleteButton: {
+    backgroundColor: 'transparent',
+  },
+  editButtonText: {
+    color: '#f0f0f0',
+  },
+  deleteButtonText: {
+    color: 'red',
+  },
+
 });
 
 export default AdminDashboard;
