@@ -25,6 +25,7 @@
     "react-native": "0.74.2",
     "react-native-calendars": "^1.1305.0",
     "react-native-color-picker": "^0.6.0",
+    "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-modal": "^13.0.1",
     "react-native-reanimated": "~3.10.1",
@@ -41,4 +42,3 @@
   },
   "private": true
 }
-
