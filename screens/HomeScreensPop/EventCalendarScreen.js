@@ -3,18 +3,21 @@ import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 
+
 const EventCalendarScreen = () => {
   const [events, setEvents] = useState({});
   const [eventList, setEventList] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     fetchEvents();
   }, []);
 
+
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('https://volunteerbridge-authapi.onrender.com/api/v1/events');
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/events`);
       const eventsData = response.data.reduce((acc, event) => {
         const date = event.date.split('T')[0]; // Extract the date part only
         acc[date] = {
@@ -33,6 +36,7 @@ const EventCalendarScreen = () => {
     }
   };
 
+
   const handleDayPress = (day) => {
     const selectedDate = day.dateString;
     const selectedEvents = eventList.filter((event) => event.date.split('T')[0] === selectedDate);
@@ -44,6 +48,7 @@ const EventCalendarScreen = () => {
     }
   };
 
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -51,6 +56,7 @@ const EventCalendarScreen = () => {
       </View>
     );
   }
+
 
   return (
     <View style={styles.container}>
@@ -64,6 +70,7 @@ const EventCalendarScreen = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -87,4 +94,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 export default EventCalendarScreen;
+
+
