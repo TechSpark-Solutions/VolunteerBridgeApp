@@ -24,6 +24,7 @@ import NonprofitProfileScreen from './screens/HomeScreensPop/NonprofitProfileScr
 import { ThemeProvider } from './context/ThemeContext';
 import { NonprofitProfileProvider } from './context/NonprofitProfileContext';
 
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -31,8 +32,9 @@ const MainTabNavigator = () => (
   <Tab.Navigator
     initialRouteName="Home"
     screenOptions={{
-      tabBarActiveTintColor: 'blue',
+      tabBarActiveTintColor: '#1a759f',
       tabBarInactiveTintColor: 'gray',
+     
     }}
   >
     <Tab.Screen
@@ -46,7 +48,7 @@ const MainTabNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="VolunteerDashboard"
+      name="Volunteer Dashboard"
       component={VolunteerDashboard}
       options={{
         tabBarLabel: 'Dashboard',
@@ -66,7 +68,7 @@ const MainTabNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Admin"
+      name="Admin Dashboard"
       component={AdminDashboard}
       options={{
         tabBarLabel: 'Admin',
@@ -96,6 +98,7 @@ const AuthStack = () => (
 );
 
 const App = () => {
+  
   return (
     <ThemeProvider>
       <NonprofitProfileProvider>
@@ -104,6 +107,7 @@ const App = () => {
         </NavigationContainer>
       </NonprofitProfileProvider>
     </ThemeProvider>
+   
   );
 };
 

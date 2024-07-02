@@ -1,9 +1,23 @@
-import React from 'react';
-import { View, Text, StyleSheet, Switch } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Switch, Alert } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 
 const GlobalSettings = () => {
   const { isDarkMode, toggleTheme } = useTheme();
+  const [isNewsNotificationEnabled, setIsNewsNotificationEnabled] = useState(false);
+
+  const handleNotificationToggle = () => {
+    setIsNewsNotificationEnabled(previousState => !previousState);
+    if (!isNewsNotificationEnabled) {
+      handleNotificationSignup();
+    } else {
+      Alert.alert('Success', 'You have unsubscribed from news notifications.');
+    }
+  };
+
+  const handleNotificationSignup = () => {
+    Alert.alert('Success', 'You have signed up for news notifications.');
+  };
 
   return (
     <View style={isDarkMode ? styles.containerDark : styles.container}>
@@ -12,7 +26,10 @@ const GlobalSettings = () => {
         <Text style={isDarkMode ? styles.settingTextDark : styles.settingText}>Dark Mode</Text>
         <Switch value={isDarkMode} onValueChange={toggleTheme} />
       </View>
-      <Text>This section is for handling settings that relate to the app.</Text>
+      <View style={styles.settingItem}>
+        <Text style={isDarkMode ? styles.settingTextDark : styles.settingText}>News Notifications</Text>
+        <Switch value={isNewsNotificationEnabled} onValueChange={handleNotificationToggle} />
+      </View>
     </View>
   );
 };

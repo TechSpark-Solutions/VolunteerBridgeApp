@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, TextInput, Button, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, TextInput, Button, Alert, Image } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
+import styled from 'styled-components';
 
 const HomeScreen = ({ navigation }) => {
   const { isDarkMode } = useTheme();
@@ -41,11 +42,12 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require('../assets/background.jpg')}
+      source={require('../assets/image1_0.jpg')}
       style={styles.backgroundImage}
     >
+  
       <View style={isDarkMode ? styles.containerDark : styles.container}>
-        <Text style={isDarkMode ? styles.titleDark : styles.title}>Welcome to VolunteerBridge</Text>
+        <Text style={isDarkMode ? styles.titleDark : styles.title}>Welcome to Volunteer Bridge</Text>
 
         {/* Button to navigate to NonprofitProfileScreen */}
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NonprofitProfileScreen')}>
@@ -76,14 +78,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(240, 220, 240, 0.4)',
     padding: 20,
   },
   containerDark: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)', 
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     padding: 20,
   },
   title: {
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     marginBottom: 20,
+    fontFamily:''
   },
   titleDark: {
     fontSize: 28,
@@ -110,10 +113,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#1a759f',
     padding: 15,
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 25,
     width: '100%',
     alignItems: 'center',
   },
@@ -122,6 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+
 });
 
 export default HomeScreen;
