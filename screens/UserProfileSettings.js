@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, TouchableOpacity, FlatList,Image } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../context/ThemeContext'; 
+import { useTheme } from '../context/ThemeContext'; // Import useTheme hook from context
+import * as LocalAuthentication from 'expo-local-authentication';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import RadioGroup from 'react-native-radio-buttons-group';
+import axios from 'axios';
 
 const UserProfileSettings = () => {
   const navigation = useNavigation();
-  const { isDarkMode } = useTheme(); 
+  const { isDarkMode } = useTheme(); // Retrieve isDarkMode state and toggleTheme function
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -18,7 +22,66 @@ const UserProfileSettings = () => {
   const [bio, setBio] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
 
+  const [userData, setUserData] = useState({"email": null, "firstName": null, "lastName": null, "role": "user", "userID": null});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+
+  const checkHardware = async () => {
+    const compatible = await LocalAuthentication.hasHardwareAsync();
+    if (!compatible) {
+      console.log('This device is not compatible for biometric authentication');
+      return false;
+    }
+
+    const enrolled = await LocalAuthentication.isEnrolledAsync();
+    if (!enrolled) {
+      console.log('No biometrics are enrolled');
+      return false;
+    }
+    return true;
+  };
+
+
+
+  const authenticate = async () => {
+
+    const API_URL = process.env.EXPO_PUBLIC_API_URL
+
+    const hasHardware = await checkHardware();
+    if (!hasHardware) return;
+    const credential = await AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+      ],
+    });
+
+
+    try {
+      if (credential) {
+        const { user, email, fullName } = credential;
+        let signInInfo = { userID: user, email: email, firstName: fullName.givenName, lastName: fullName.familyName, role: selectedRole }
+        if (signInInfo.email !== null) {
+          await axios.post(`http://10.0.0.236:3000/api/v1/signup/`, signInInfo);
+        }
+        const res = await axios.post(`http://10.0.0.236:3000/api/v1/signin/`, signInInfo);
+        let userInfo = res.data;
+
+        setIsAuthenticated(true);
+        setUserData(userInfo);
+        setFirstName(userInfo.firstName);
+        setLastName(userInfo.lastName);
+        setEmail(userInfo.email);
+      }
+    } catch (error) {
+      if (error.code === 'ERR_CANCELED') {
+        console.log('User canceled the sign-in');
+      } else {
+        console.error('Error with Apple Sign In:', error);
+      }
+    }
+  }
 
   const handleSave = async () => {
     const profileData = {
@@ -33,24 +96,29 @@ const UserProfileSettings = () => {
     };
 
     try {
-      const response = await fetch('https://example.com/api/profile', {
-        method: 'POST', // or 'PUT' for updating existing profile
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(profileData),
-      });
+      const response = await axios.put('https://example.com/api/profile', )
 
-      if (response.ok) {
-        Alert.alert('Success', 'Profile information saved successfully');
-      } else {
-        const errorData = await response.json();
-        Alert.alert('Error', errorData.message || 'Failed to save profile information');
-      }
+
+
     } catch (error) {
-      Alert.alert('Error', 'An error occurred while saving profile information');
+      Alert.alert('Error', error.message);
     }
   };
+
+  const roleButtons = useMemo(() => ([
+    {
+      id: 'user',
+      label: 'User',
+      value: 'user'
+    },
+    {
+      id: 'admin',
+      label: 'Admin',
+      value: 'admin'
+    }
+  ]), []);
+
+  const [selectedRole, setSelectedRole] = useState('user');
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -63,133 +131,135 @@ const UserProfileSettings = () => {
   );
 
   return (
-   
-      
     <ScrollView contentContainerStyle={isDarkMode ? styles.containerDark : styles.container}>
-   
       <Text style={isDarkMode ? styles.titleDark : styles.title}>User Profile Settings</Text>
-      
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>First Name:</Text>
-      <TextInput
-        style={[styles.input, isDarkMode && styles.inputDark]}
-        value={firstName}
-        onChangeText={setFirstName}
-        placeholder="Enter your first name"
-        
-      />
+      {isAuthenticated ? <>
+          <>
+            {userData ?
+              <>
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>First Name:</Text>
+                <TextInput
+                  style={[styles.input, isDarkMode && styles.inputDark]}
+                  value={firstName}
+                  onChangeText={setFirstName}
+                  placeholder="Enter your first name"
+                />
 
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>Last Name:</Text>
-      <TextInput
-        style={[styles.input, isDarkMode && styles.inputDark]}
-        value={lastName}
-        onChangeText={setLastName}
-        placeholder="Enter your last name"
-     
-      />
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>Last Name:</Text>
+                <TextInput
+                  style={[styles.input, isDarkMode && styles.inputDark]}
+                  value={lastName}
+                  onChangeText={setLastName}
+                  placeholder="Enter your last name"
+                />
 
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>Phone:</Text>
-      <TextInput
-        style={[styles.input, isDarkMode && styles.inputDark]}
-        value={phone}
-        onChangeText={setPhone}
-        placeholder="Enter your phone number"
-        keyboardType="phone-pad"
-        
-      />
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>Phone:</Text>
+                <TextInput
+                  style={[styles.input, isDarkMode && styles.inputDark]}
+                  value={phone}
+                  onChangeText={setPhone}
+                  placeholder="Enter your phone number"
+                  keyboardType="phone-pad"
+                />
 
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>Email:</Text>
-      <TextInput
-        style={[styles.input, isDarkMode && styles.inputDark]}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Enter your email"
-        keyboardType="email-address"
-      />
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>Email:</Text>
+                <TextInput
+                  style={[styles.input, isDarkMode && styles.inputDark]}
+                  value={email}
+                  onChangeText={setEmail}
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                />
 
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>Age:</Text>
-      <TextInput
-        style={[styles.input, isDarkMode && styles.inputDark]}
-        value={age}
-        onChangeText={setAge}
-        placeholder="Enter your age"
-        keyboardType="numeric"
-      />
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>Age:</Text>
+                <TextInput
+                  style={[styles.input, isDarkMode && styles.inputDark]}
+                  value={age}
+                  onChangeText={setAge}
+                  placeholder="Enter your age"
+                  keyboardType="numeric"
+                />
 
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>Location (State):</Text>
-      <TouchableOpacity onPress={toggleModal} style={[styles.dropdown, isDarkMode && styles.dropdownDark]}>
-        <Text style={[styles.dropdownText, isDarkMode && styles.dropdownTextDark]}>{location || "Select your state"}</Text>
-      </TouchableOpacity>
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>Location (State):</Text>
+                <TouchableOpacity onPress={toggleModal} style={[styles.dropdown, isDarkMode && styles.dropdownDark]}>
+                  <Text style={[styles.dropdownText, isDarkMode && styles.dropdownTextDark]}>{location || "Select your state"}</Text>
+                </TouchableOpacity>
 
-      <Modal isVisible={isModalVisible}>
-        <View style={styles.modalContent}>
-          <FlatList
-            data={states}
-            renderItem={renderStateItem}
-            keyExtractor={(item) => item}
-          />
-          <Button title="Close" onPress={toggleModal} />
-        </View>
-      </Modal>
+                <Modal isVisible={isModalVisible}>
+                  <View style={styles.modalContent}>
+                    <FlatList
+                      data={states}
+                      renderItem={renderStateItem}
+                      keyExtractor={(item) => item}
+                    />
+                    <Button title="Close" onPress={toggleModal} />
+                  </View>
+                </Modal>
 
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>Skills:</Text>
-      <TextInput
-        style={[styles.input, isDarkMode && styles.inputDark]}
-        value={skills}
-        onChangeText={setSkills}
-        placeholder="Enter your skills"
-      />
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>Skills:</Text>
+                <TextInput
+                  style={[styles.input, isDarkMode && styles.inputDark]}
+                  value={skills}
+                  onChangeText={setSkills}
+                  placeholder="Enter your skills"
+                />
 
-<Text style={[styles.label, isDarkMode && styles.labelDark]}>Bio:</Text>
-        <TextInput
-          style={[styles.bio, isDarkMode && styles.inputDark, styles.bioInput]}
-          value={bio}
-          onChangeText={setBio}
-          placeholder="Tell us about yourself"
-          multiline={true}
-          numberOfLines={4}
-          textAlignVertical="top" 
+                <Text style={isDarkMode ? styles.labelDark : styles.label}>Bio:</Text>
+                <TextInput
+                  style={[styles.input, isDarkMode && styles.inputDark]}
+                  value={bio}
+                  onChangeText={setBio}
+                  placeholder="Tell us about yourself"
+                  multiline
+                />
+
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={[styles.button, styles.cancelButton]}>
+                    <Text style={styles.buttonText}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={handleSave} style={[styles.button, styles.saveButton]}>
+                    <Text style={styles.buttonText}>Save</Text>
+                  </TouchableOpacity>
+                </View>
+              </> : <Text>Reset Sign in with Apple and try again.</Text>
+            }
+          </>
+      </> : <>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+        <Text>Biometric Authentication Example</Text>
+        <RadioGroup
+          radioButtons={roleButtons}
+          onPress={setSelectedRole}
+          selectedId={selectedRole}
         />
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={[styles.button, styles.cancelButton]}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSave} style={[styles.button, styles.saveButton]}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
+        <Text style={{ margin: 20 }}>The role will not be updated if the user has already signed in once.</Text>
+        <Button title="Authenticate" onPress={authenticate} />
       </View>
+    </>}
     </ScrollView>
-   
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingLeft: 10,
-    paddingRight:10,
-    paddingTop:45,
-
-    backgroundColor: '#dcd5d8',
+    flexGrow: 1,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
   },
   containerDark: {
-    flex: 1,
-    paddingLeft: 10,
-    paddingTop:50,
+    flexGrow: 1,
+    padding: 20,
     backgroundColor: '#333',
-    placeholderTextColor:'white',
-    
   },
   title: {
     fontSize: 24,
-    marginTop: 10,
-    marginBottom: 5,
+    marginBottom: 20,
     textAlign: 'center',
     color: '#000',
   },
   titleDark: {
     fontSize: 24,
-    marginBottom: 5,
+    marginBottom: 20,
     textAlign: 'center',
     color: '#fff',
   },
@@ -207,14 +277,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 10,
-    paddingLeft: 8,
-    color: '#000',
-  },
-  bio:{
-    height: 100,
-    borderColor: '#ccc',
-    borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 8,
     color: '#000',
@@ -227,7 +289,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 20,
     justifyContent: 'center',
     paddingLeft: 8,
     backgroundColor: '#fff',
@@ -267,15 +329,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   cancelButton: {
-    backgroundColor: '#b13a1a',
+    backgroundColor: 'red',
   },
   saveButton: {
-    backgroundColor: '#1a759f',
+    backgroundColor: 'blue',
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
-  }
+  },
 });
 
 export default UserProfileSettings;
