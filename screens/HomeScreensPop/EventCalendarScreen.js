@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 const EventCalendarScreen = () => {
   const [events, setEvents] = useState({});
   const [eventList, setEventList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     fetchEvents();
   }, []);
-
 
   const fetchEvents = async () => {
     try {
@@ -36,7 +34,6 @@ const EventCalendarScreen = () => {
     }
   };
 
-
   const handleDayPress = (day) => {
     const selectedDate = day.dateString;
     const selectedEvents = eventList.filter((event) => event.date.split('T')[0] === selectedDate);
@@ -48,34 +45,46 @@ const EventCalendarScreen = () => {
     }
   };
 
-
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
+      <LinearGradient
+        colors={['#000000', '#434343']}
+        style={styles.gradient}
+      >
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#ffffff" />
+        </View>
+      </LinearGradient>
     );
   }
 
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Event Calendar</Text>
-      <View style={styles.calendarContainer}>
-        <Calendar
-          markedDates={events}
-          onDayPress={handleDayPress}
-        />
+    <LinearGradient
+      colors={['#90A1A4', '#95A6A9', '#EFF6F7']}
+      style={styles.gradient}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Event Calendar</Text>
+        <View style={styles.calendarContainer}>
+          <Calendar
+            markedDates={events}
+            onDayPress={handleDayPress}
+          />
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
-
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   loadingContainer: {
     flex: 1,
@@ -83,18 +92,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
-    marginTop: 40,
+    color: '#ffffff',
     textAlign: 'center',
+    marginBottom: 40,
+    fontFamily: 'Times New Roman',
   },
   calendarContainer: {
     marginTop: 20,
     paddingHorizontal: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 15,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
 });
 
-
 export default EventCalendarScreen;
-
-

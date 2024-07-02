@@ -1,54 +1,81 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useNonprofitProfileContext } from '../../context/NonprofitProfileContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const VolunteerOpportunitiesScreen = () => {
   const { nonprofitProfiles } = useNonprofitProfileContext();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Non Profit profiles</Text>
-      <Text style={styles.text}>Browse Non Profit profiles and contacts</Text>
+    <LinearGradient
+      colors={['#90A1A4', '#95A6A9', '#EFF6F7']}
+      style={styles.gradient}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>Nonprofit Profiles</Text>
+        <Text style={styles.text}>Browse Nonprofit profiles and contacts</Text>
 
-      {nonprofitProfiles.map((profile, index) => (
-        <View key={index} style={styles.profileContainer}>
-          <Text style={styles.profileTitle}>{profile.orgName}</Text>
-          <Text>Mission: {profile.missionStatement}</Text>
-          <Text>Contact: {profile.contactInfo}</Text>
-        </View>
-      ))}
-    </View>
+        {nonprofitProfiles.map((profile, index) => (
+          <View key={index} style={styles.profileContainer}>
+            <Text style={styles.profileTitle}>{profile.orgName}</Text>
+            <Text style={styles.profileText}>Mission: {profile.missionStatement}</Text>
+            <Text style={styles.profileText}>Contact: {profile.contactInfo}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  gradient: {
     flex: 1,
+  },
+  container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    padding: 20,
+    paddingTop: 70,
   },
   title: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: 40,
+    fontFamily: 'Times New Roman',
   },
   text: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 20,
+    color: '#ffffff',
     textAlign: 'center',
+    marginBottom: 20,
+    fontFamily: 'Times New Roman',
   },
   profileContainer: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
-    marginVertical: 5,
-    width: '80%',
+    backgroundColor: '#fff',
+    padding: 15,
+    marginVertical: 10,
+    borderRadius: 10,
+    width: '100%',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   profileTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 10,
+    fontFamily: 'Times New Roman',
+  },
+  profileText: {
+    fontSize: 18,
+    color: '#333',
     marginBottom: 5,
+    fontFamily: 'Times New Roman',
   },
 });
 
