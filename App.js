@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+
 import SplashScreen from './screens/SplashScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
@@ -21,64 +22,72 @@ import EventCalendarScreen from './screens/HomeScreensPop/EventCalendarScreen';
 import NewsFeedScreen from './screens/HomeScreensPop/NewsFeedScreen';
 import NonprofitProfileScreen from './screens/HomeScreensPop/NonprofitProfileScreen';
 
+
 import { ThemeProvider } from './context/ThemeContext';
 import { NonprofitProfileProvider } from './context/NonprofitProfileContext';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const MainTabNavigator = () => (
-  <Tab.Navigator
-    initialRouteName="Home"
-    screenOptions={{
-      tabBarActiveTintColor: '#1a759f',
-      tabBarInactiveTintColor: 'gray',
-     
-    }}
-  >
-    <Tab.Screen
-      name="Home"
-      component={HomeScreen}
-      options={{
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={size} />
-        ),
+
+const MainTabNavigator = () => {
+  const { t } = useLanguage();
+
+
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarActiveTintColor: '#1a759f',
+        tabBarInactiveTintColor: 'gray',
       }}
-    />
-    <Tab.Screen
-      name="Volunteer Dashboard"
-      component={VolunteerDashboard}
-      options={{
-        tabBarLabel: 'Dashboard',
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="account" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Settings"
-      component={SettingsScreen}
-      options={{
-        tabBarLabel: 'Settings',
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="cog" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Admin Dashboard"
-      component={AdminDashboard}
-      options={{
-        tabBarLabel: 'Admin',
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="account-settings" color={color} size={size} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: t('home'),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="VolunteerDashboard"
+        component={VolunteerDashboard}
+        options={{
+          tabBarLabel: t('dashboard'),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: t('settings'),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cog" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AdminDashboard"
+        component={AdminDashboard}
+        options={{
+          tabBarLabel: t('admin'),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account-settings" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
+
 
 const AuthStack = () => (
   <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
@@ -97,19 +106,20 @@ const AuthStack = () => (
   </Stack.Navigator>
 );
 
+
 const App = () => {
-  
   return (
     <ThemeProvider>
       <NonprofitProfileProvider>
-        <NavigationContainer>
-          <AuthStack />
-        </NavigationContainer>
+        <LanguageProvider>
+          <NavigationContainer>
+            <AuthStack />
+          </NavigationContainer>
+        </LanguageProvider>
       </NonprofitProfileProvider>
     </ThemeProvider>
-   
   );
 };
 
-export default App;
 
+export default App;
