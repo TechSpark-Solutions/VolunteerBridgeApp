@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Alert } from 'react-native';
-import { useNonprofitProfileContext } from '../../context/NonprofitProfileContext'; // Ensure correct import path
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { useNonprofitProfileContext } from '../../context/NonprofitProfileContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const NonprofitProfileScreen = ({ navigation }) => {
-  const { addNonprofitProfile } = useNonprofitProfileContext(); // Ensure you're correctly accessing the context
+  const { addNonprofitProfile } = useNonprofitProfileContext();
   const [orgName, setOrgName] = useState('');
   const [missionStatement, setMissionStatement] = useState('');
   const [contactInfo, setContactInfo] = useState('');
@@ -42,50 +43,60 @@ const NonprofitProfileScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Nonprofit Profile Creation</Text>
+    <LinearGradient
+      colors={['#90A1A4', '#95A6A9', '#EFF6F7']}
+      style={styles.gradient}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Nonprofit Profile Creation</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Organization Name"
-        value={orgName}
-        onChangeText={text => setOrgName(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Mission Statement"
-        multiline
-        numberOfLines={4}
-        value={missionStatement}
-        onChangeText={text => setMissionStatement(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Contact Information"
-        value={contactInfo}
-        onChangeText={text => setContactInfo(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Project Description"
-        multiline
-        numberOfLines={4}
-        value={projectDescription}
-        onChangeText={text => setProjectDescription(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Logo URL"
-        value={logoUrl}
-        onChangeText={text => setLogoUrl(text)}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Organization Name"
+          value={orgName}
+          onChangeText={text => setOrgName(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Mission Statement"
+          multiline
+          numberOfLines={4}
+          value={missionStatement}
+          onChangeText={text => setMissionStatement(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Contact Information"
+          value={contactInfo}
+          onChangeText={text => setContactInfo(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Project Description"
+          multiline
+          numberOfLines={4}
+          value={projectDescription}
+          onChangeText={text => setProjectDescription(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Logo URL"
+          value={logoUrl}
+          onChangeText={text => setLogoUrl(text)}
+        />
 
-      <Button title="Create Profile" onPress={handleProfileCreation} />
-    </View>
+        <TouchableOpacity style={styles.button} onPress={handleProfileCreation}>
+          <Text style={styles.buttonText}>Create Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -93,18 +104,43 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: 40,
+    fontFamily: 'Times New Roman',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     backgroundColor: '#fff',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
+    padding: 15,
+    marginBottom: 20,
+    borderRadius: 10,
     width: '100%',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  button: {
+    backgroundColor: '#1a759f',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 25,
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'Times New Roman',
   },
 });
 

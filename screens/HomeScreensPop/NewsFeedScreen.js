@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const NewsFeedScreen = () => {
   const [events, setEvents] = useState([]);
@@ -33,66 +34,77 @@ const NewsFeedScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>News & Updates</Text>
-      <Text style={styles.text}>Organization news and updates will appear here.</Text>
+    <LinearGradient
+      colors={['#90A1A4', '#95A6A9', '#EFF6F7']}
+      style={styles.gradient}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>News & Updates</Text>
+        <Text style={styles.text}>Organization news and updates will appear here.</Text>
 
-      {/* Event Popup */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showEventPopup}
-        onRequestClose={closeEventPopup}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            {selectedEvent && (
-              <>
-                <Text style={styles.eventName}>{selectedEvent.name}</Text>
-                <Text style={styles.eventDate}>Date: {selectedEvent.date}</Text>
-                <Text style={styles.eventLocation}>Location: {selectedEvent.location}</Text>
-                <Text style={styles.eventDetails}>Details: {selectedEvent.details}</Text>
-                <TouchableOpacity style={styles.closeButton} onPress={closeEventPopup}>
-                  <Text style={styles.closeButtonText}>Close</Text>
-                </TouchableOpacity>
-              </>
-            )}
+        {/* Event Popup */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showEventPopup}
+          onRequestClose={closeEventPopup}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              {selectedEvent && (
+                <>
+                  <Text style={styles.eventName}>{selectedEvent.name}</Text>
+                  <Text style={styles.eventDate}>Date: {selectedEvent.date}</Text>
+                  <Text style={styles.eventLocation}>Location: {selectedEvent.location}</Text>
+                  <Text style={styles.eventDetails}>Details: {selectedEvent.details}</Text>
+                  <TouchableOpacity style={styles.closeButton} onPress={closeEventPopup}>
+                    <Text style={styles.closeButtonText}>Close</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      {/* Display Events */}
-      <View style={styles.eventsContainer}>
-        {events.map(event => (
-          <TouchableOpacity
-            key={event.id}
-            style={styles.eventItem}
-            onPress={() => openEventPopup(event)}
-          >
-            <Text style={styles.eventName}>{event.name}</Text>
-            <Text style={styles.eventDate}>Date: {event.date}</Text>
-            <Text style={styles.eventLocation}>Location: {event.location}</Text>
-          </TouchableOpacity>
-        ))}
+        {/* Display Events */}
+        <View style={styles.eventsContainer}>
+          {events.map(event => (
+            <TouchableOpacity
+              key={event.id}
+              style={styles.eventItem}
+              onPress={() => openEventPopup(event)}
+            >
+              <Text style={styles.eventName}>{event.name}</Text>
+              <Text style={styles.eventDate}>Date: {event.date}</Text>
+              <Text style={styles.eventLocation}>Location: {event.location}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: 40,
+    fontFamily: 'Times New Roman',
   },
   text: {
-    fontSize: 16,
+    fontSize: 20,
     color: '#333',
     textAlign: 'center',
     marginBottom: 20,
@@ -103,12 +115,16 @@ const styles = StyleSheet.create({
   },
   eventItem: {
     marginBottom: 20,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 8,
+    padding: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   eventName: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   eventDate: {
@@ -124,8 +140,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
     padding: 20,
     width: '80%',
   },
@@ -136,11 +152,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: '#1a759f',
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: 'center',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   closeButtonText: {
-    color: '#fff',
+    color: '#ffffff',
     fontWeight: 'bold',
   },
 });
