@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, Alert, Image } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 
 const SettingsScreen = ({ navigation }) => {
@@ -10,13 +10,14 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground source={require('../assets/background3.jpg')} style={styles.backgroundImage}>
+    <ImageBackground
+    source={require('../assets/image1_0.jpg')}
+    style={styles.backgroundImage}
+  >
       <View style={isDarkMode ? styles.containerDark : styles.container}>
         <View style={styles.content}>
+        
           <Text style={isDarkMode ? styles.titleDark : styles.title}>Settings</Text>
-
-          <Button title="Enable News Notifications" onPress={handleNotificationSignup} />
-
           <Button
             title="Global Settings"
             onPress={() => navigation.navigate('GlobalSettings')}
@@ -41,13 +42,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent background overlay
+    backgroundColor: 'rgba(240, 220, 240, 0.4)', 
   },
   containerDark: {
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: 'rgba(51, 51, 51, 0.5)', // Dark mode semi-transparent background overlay
+    backgroundColor: 'rgba(51, 51, 51, 0.5)', 
   },
   content: {
     flex: 1,
@@ -57,15 +58,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    padding:20,
+    marginTop:-400,
     color: '#000',
   },
   titleDark: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginTop: -400,
+    padding:20,
     color: '#fff',
   },
+  
 });
 
 export default SettingsScreen;

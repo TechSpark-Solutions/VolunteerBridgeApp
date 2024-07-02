@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, TouchableOpacity, FlatList,Image } from 'react-native';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../context/ThemeContext'; // Import useTheme hook from context
+import { useTheme } from '../context/ThemeContext'; 
 
 const UserProfileSettings = () => {
   const navigation = useNavigation();
-  const { isDarkMode } = useTheme(); // Retrieve isDarkMode state and toggleTheme function
+  const { isDarkMode } = useTheme(); 
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -63,7 +63,10 @@ const UserProfileSettings = () => {
   );
 
   return (
+   
+      
     <ScrollView contentContainerStyle={isDarkMode ? styles.containerDark : styles.container}>
+   
       <Text style={isDarkMode ? styles.titleDark : styles.title}>User Profile Settings</Text>
       
       <Text style={isDarkMode ? styles.labelDark : styles.label}>First Name:</Text>
@@ -72,6 +75,7 @@ const UserProfileSettings = () => {
         value={firstName}
         onChangeText={setFirstName}
         placeholder="Enter your first name"
+        
       />
 
       <Text style={isDarkMode ? styles.labelDark : styles.label}>Last Name:</Text>
@@ -80,6 +84,7 @@ const UserProfileSettings = () => {
         value={lastName}
         onChangeText={setLastName}
         placeholder="Enter your last name"
+     
       />
 
       <Text style={isDarkMode ? styles.labelDark : styles.label}>Phone:</Text>
@@ -89,6 +94,7 @@ const UserProfileSettings = () => {
         onChangeText={setPhone}
         placeholder="Enter your phone number"
         keyboardType="phone-pad"
+        
       />
 
       <Text style={isDarkMode ? styles.labelDark : styles.label}>Email:</Text>
@@ -133,14 +139,16 @@ const UserProfileSettings = () => {
         placeholder="Enter your skills"
       />
 
-      <Text style={isDarkMode ? styles.labelDark : styles.label}>Bio:</Text>
-      <TextInput
-        style={[styles.input, isDarkMode && styles.inputDark]}
-        value={bio}
-        onChangeText={setBio}
-        placeholder="Tell us about yourself"
-        multiline
-      />
+<Text style={[styles.label, isDarkMode && styles.labelDark]}>Bio:</Text>
+        <TextInput
+          style={[styles.bio, isDarkMode && styles.inputDark, styles.bioInput]}
+          value={bio}
+          onChangeText={setBio}
+          placeholder="Tell us about yourself"
+          multiline={true}
+          numberOfLines={4}
+          textAlignVertical="top" 
+        />
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={[styles.button, styles.cancelButton]}>
@@ -151,29 +159,37 @@ const UserProfileSettings = () => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+   
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+    paddingLeft: 10,
+    paddingRight:10,
+    paddingTop:45,
+
+    backgroundColor: '#dcd5d8',
   },
   containerDark: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 10,
+    paddingTop:50,
     backgroundColor: '#333',
+    placeholderTextColor:'white',
+    
   },
   title: {
     fontSize: 24,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 5,
     textAlign: 'center',
     color: '#000',
   },
   titleDark: {
     fontSize: 24,
-    marginBottom: 20,
+    marginBottom: 5,
     textAlign: 'center',
     color: '#fff',
   },
@@ -191,6 +207,14 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
+    marginBottom: 10,
+    paddingLeft: 8,
+    color: '#000',
+  },
+  bio:{
+    height: 100,
+    borderColor: '#ccc',
+    borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 8,
     color: '#000',
@@ -203,7 +227,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 10,
     justifyContent: 'center',
     paddingLeft: 8,
     backgroundColor: '#fff',
@@ -243,15 +267,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   cancelButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#b13a1a',
   },
   saveButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#1a759f',
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
-  },
+  }
 });
 
 export default UserProfileSettings;
