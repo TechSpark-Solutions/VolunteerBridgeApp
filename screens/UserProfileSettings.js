@@ -96,22 +96,12 @@ const UserProfileSettings = () => {
     };
 
     try {
-      const response = await fetch('https://example.com/api/profile', {
-        method: 'POST', // or 'PUT' for updating existing profile
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(profileData),
-      });
+      const response = await axios.put('https://example.com/api/profile', )
 
-      if (response.ok) {
-        Alert.alert('Success', 'Profile information saved successfully');
-      } else {
-        const errorData = await response.json();
-        Alert.alert('Error', errorData.message || 'Failed to save profile information');
-      }
+
+
     } catch (error) {
-      Alert.alert('Error', 'An error occurred while saving profile information');
+      Alert.alert('Error', error.message);
     }
   };
 
