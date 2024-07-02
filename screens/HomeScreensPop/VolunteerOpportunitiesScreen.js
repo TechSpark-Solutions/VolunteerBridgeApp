@@ -1,5 +1,3 @@
-// src/components/screens/VolunteerOpportunitiesScreen.js
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useNonprofitProfileContext } from '../../context/NonprofitProfileContext';
@@ -9,8 +7,8 @@ const VolunteerOpportunitiesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Volunteer Opportunities</Text>
-      <Text style={styles.text}>Browse and sign up for volunteer opportunities.</Text>
+      <Text style={styles.title}>Non Profit profiles</Text>
+      <Text style={styles.text}>Browse Non Profit profiles and contacts</Text>
 
       {nonprofitProfiles.map((profile, index) => (
         <View key={index} style={styles.profileContainer}>
