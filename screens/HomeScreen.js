@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, TextInput, Button, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
-import styled from 'styled-components';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeScreen = ({ navigation }) => {
   const { isDarkMode } = useTheme();
@@ -41,12 +41,12 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/image1_0.jpg')}
-      style={styles.backgroundImage}
+    <LinearGradient
+      colors={isDarkMode ? ['#000000', '#434343'] : ['#90A1A4','#95A6A9', '#EFF6F7']}
+      style={styles.gradient}
     >
-  
-      <View style={isDarkMode ? styles.containerDark : styles.container}>
+      <Image source={require('../assets/home.png')} style={styles.image} />
+      <View style={styles.container}>
         <Text style={isDarkMode ? styles.titleDark : styles.title}>Welcome to Volunteer Bridge</Text>
 
         {/* Button to navigate to NonprofitProfileScreen */}
@@ -64,21 +64,24 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Check News and Updates</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  gradient: {
     flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
+  },
+  image: {
+    width:'100%',
+    height:200,
+    marginTop:20,
+    marginBottom:-80,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(240, 220, 240, 0.4)',
     padding: 20,
   },
   containerDark: {
@@ -89,28 +92,21 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 40,
     fontWeight: 'bold',
-    color: '#fff',
+    color: 'white',
     textAlign: 'center',
-    marginBottom: 20,
-    fontFamily:''
+    marginBottom: 40,
+    fontFamily:'Times New Roman',
+    
   },
   titleDark: {
-    fontSize: 28,
+    fontSize: 40,
     fontWeight: 'bold',
-    color: '#bbb', 
+    color: '#f3f6f4', 
     textAlign: 'center',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#fff',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-    width: '100%',
+    marginBottom: 40,
+    fontFamily:'Times New Roman',
   },
   button: {
     backgroundColor: '#1a759f',
@@ -119,13 +115,19 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     width: '100%',
     alignItems: 'center',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 18,
+    color: 'white',
+    fontSize: 20,
     fontWeight: 'bold',
+    fontFamily:'Times New Roman',
+    
+    
   },
-
 });
 
 export default HomeScreen;
