@@ -40,7 +40,7 @@ const NewsFeedScreen = () => {
     >
       <View style={styles.container}>
         <Text style={styles.title}>News & Updates</Text>
-        <Text style={styles.text}>Organization news and updates will appear here.</Text>
+       
 
         {/* Event Popup */}
         <Modal

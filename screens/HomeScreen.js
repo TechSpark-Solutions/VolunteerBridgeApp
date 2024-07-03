@@ -55,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('VolunteerOpportunities')}>
-          <Text style={styles.buttonText}>Browse Volunteer Opportunities</Text>
+          <Text style={styles.buttonText}>Browse Nonprofit Profiles</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EventCalendar')}>
           <Text style={styles.buttonText}>View Event Calendar</Text>

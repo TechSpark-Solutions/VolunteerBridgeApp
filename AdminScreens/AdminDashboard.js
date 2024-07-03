@@ -81,6 +81,7 @@ const AdminDashboard = ({ navigation }) => {
       <Button
       style={styles.button}
         title="Edit"
+        flex="row"
         color="#1a759f"
         buttonStyle={styles.editButton}
         titleStyle={styles.editButtonText}
@@ -122,6 +123,7 @@ const AdminDashboard = ({ navigation }) => {
 <Button
         title="Delete"
         color="red"
+        flex="row"
         buttonStyle={styles.deleteButton}
         titleStyle={styles.deleteButtonText}
         onPress={() => handleDeleteEvent(item)}
@@ -359,6 +361,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     backgroundColor: 'transparent',
+   
   },
   deleteButton: {
     backgroundColor: 'transparent',

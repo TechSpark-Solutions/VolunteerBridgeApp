@@ -240,7 +240,7 @@ const UserProfileSettings = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 20,
+    padding: 70,
     backgroundColor: '#f5f5f5',
   },
   containerDark: {

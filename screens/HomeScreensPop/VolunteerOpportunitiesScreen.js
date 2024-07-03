@@ -13,13 +13,16 @@ const VolunteerOpportunitiesScreen = () => {
     >
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Nonprofit Profiles</Text>
-        <Text style={styles.text}>Browse Nonprofit profiles and contacts</Text>
+        
 
         {nonprofitProfiles.map((profile, index) => (
           <View key={index} style={styles.profileContainer}>
             <Text style={styles.profileTitle}>{profile.orgName}</Text>
             <Text style={styles.profileText}>Mission: {profile.missionStatement}</Text>
             <Text style={styles.profileText}>Contact: {profile.contactInfo}</Text>
+            <Text style={styles.profileText}>Project Description: {profile.projectDescription}</Text>
+            <Text style={styles.profileText}>Website: {profile.logoUrl}</Text>
+            
           </View>
         ))}
       </ScrollView>

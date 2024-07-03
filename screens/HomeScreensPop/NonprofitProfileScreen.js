@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'; // Import Platform from react-native
 import { useNonprofitProfileContext } from '../../context/NonprofitProfileContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -29,7 +29,7 @@ const NonprofitProfileScreen = ({ navigation }) => {
 
     addNonprofitProfile(nonprofitProfile);
 
-    Alert.alert('Success', 'Nonprofit profile created successfully. Your org. profile will be displayed in the  "Browse Volunteer Opportunities screen (in our Home Screen) ! 😊 ');
+    Alert.alert('Success', 'Your profile will be displayed in the "Browse Nonprofit Profiles" screen (in our Home Screen) ! 😊 ');
     resetForm();
   };
 
@@ -47,48 +47,53 @@ const NonprofitProfileScreen = ({ navigation }) => {
       colors={['#90A1A4', '#95A6A9', '#EFF6F7']}
       style={styles.gradient}
     >
-      <View style={styles.container}>
-        <Text style={styles.title}>Nonprofit Profile Creation</Text>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Use Platform.OS
+      >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <Text style={styles.title}>Nonprofit Profile Creation</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Organization Name"
-          value={orgName}
-          onChangeText={text => setOrgName(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Mission Statement"
-          multiline
-          numberOfLines={4}
-          value={missionStatement}
-          onChangeText={text => setMissionStatement(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Contact Information"
-          value={contactInfo}
-          onChangeText={text => setContactInfo(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Project Description"
-          multiline
-          numberOfLines={4}
-          value={projectDescription}
-          onChangeText={text => setProjectDescription(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Logo URL"
-          value={logoUrl}
-          onChangeText={text => setLogoUrl(text)}
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="Organization Name"
+            value={orgName}
+            onChangeText={text => setOrgName(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Mission Statement"
+            multiline
+            numberOfLines={4}
+            value={missionStatement}
+            onChangeText={text => setMissionStatement(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Contact Information"
+            value={contactInfo}
+            onChangeText={text => setContactInfo(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Project Description"
+            multiline
+            numberOfLines={4}
+            value={projectDescription}
+            onChangeText={text => setProjectDescription(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Website"
+            value={logoUrl}
+            onChangeText={text => setLogoUrl(text)}
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleProfileCreation}>
-          <Text style={styles.buttonText}>Create Profile</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.button} onPress={handleProfileCreation}>
+            <Text style={styles.buttonText}>Create Profile</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </LinearGradient>
   );
 };
@@ -100,15 +105,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   title: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
     fontFamily: 'Times New Roman',
   },
   input: {
@@ -138,7 +147,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     fontFamily: 'Times New Roman',
   },
