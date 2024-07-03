@@ -105,14 +105,15 @@ const EditEvent = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+    padding: 20,
+    marginTop:40,
     backgroundColor: '#f5f5f5',
     justifyContent: 'center',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 30,
+    marginBottom: 20,
     color: '#333',
     textAlign: 'center',
   },
